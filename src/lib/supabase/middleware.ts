@@ -1,10 +1,11 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { SUPABASE_ANON_KEY, SUPABASE_URL } from "../env";
-import { HEADERS_KEYS } from "../url";
+import { HEADERS_KEYS, isAuthPath } from "../url";
 
 export async function updateSession(request: NextRequest) {
   const headers = request.headers;
+  // We add the current path to the headers so we can access it in server side functions and components
   headers.set(HEADERS_KEYS.currentPath, request.nextUrl.pathname);
   let supabaseResponse = NextResponse.next({
     request,
@@ -41,12 +42,7 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (
-    !user &&
-    !request.nextUrl.pathname.startsWith("/login") &&
-    !request.nextUrl.pathname.startsWith("/auth") &&
-    !request.nextUrl.pathname.startsWith("/register")
-  ) {
+  if (!user && !isAuthPath(request.nextUrl.pathname)) {
     // no user, potentially respond by redirecting the user to the login page
     const url = request.nextUrl.clone();
     url.pathname = "/login";

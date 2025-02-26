@@ -1,21 +1,38 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
+import { useActionState, useEffect } from "react";
+import { toast } from "sonner";
 import { signInWithGoogle } from "./actions";
 
 const TEXT = {
   welcome: "Welcome to Team Health",
   description: "Sign in to share updates and stay connected with your team",
   continueWithGoogle: "Continue with Google",
+  loginError: "An error occurred while signing in",
 };
 
 export default function Login() {
+  const [error, signInWithGoogleAction, isPending] = useActionState(
+    signInWithGoogle,
+    undefined
+  );
+
+  useEffect(() => {
+    if (error) {
+      toast.error(TEXT.loginError);
+      // TODO: Log error to error tracking service
+    }
+  }, [error]);
+
   return (
     <div className="max-w-md mx-auto mt-20 p-6 bg-card rounded-lg shadow-lg animate-in">
-      <form className="text-center space-y-6" action={signInWithGoogle}>
+      <form className="text-center space-y-6" action={signInWithGoogleAction}>
         <div className="space-y-2">
           <h1 className="text-2xl font-bold">{TEXT.welcome}</h1>
           <p className="text-muted-foreground">{TEXT.description}</p>
         </div>
-        <Button className="w-full" variant="outline">
+        <Button className="w-full" variant="outline" disabled={isPending}>
           <svg
             className="mr-2 h-4 w-4"
             aria-hidden="true"

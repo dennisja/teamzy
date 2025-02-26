@@ -17,20 +17,21 @@ async function signInWithGoogle() {
   if (data.url) {
     redirect(data.url);
   }
-  
+
   if (error) {
-    console.log(error);
-    throw error; // Note: do proper error handling here
+    return error;
   }
 }
 
 async function signOut() {
   const supabase = await createSupabaseServerClient();
   const { error } = await supabase.auth.signOut();
+
   if (!error) {
     redirect("/");
   }
-  // Note: do proper error handling here
+
+  return error;
 }
 
 export { signInWithGoogle, signOut };
