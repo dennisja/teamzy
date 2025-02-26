@@ -1,6 +1,6 @@
 "use server";
 
-import { getAppURL } from "@/lib/appURL";
+import { getAppURL } from "@/lib/url";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 
@@ -13,10 +13,13 @@ async function signInWithGoogle() {
       redirectTo: `${getAppURL()}auth/callback`,
     },
   });
+
   if (data.url) {
     redirect(data.url);
   }
+  
   if (error) {
+    console.log(error);
     throw error; // Note: do proper error handling here
   }
 }

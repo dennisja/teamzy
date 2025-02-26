@@ -1,10 +1,14 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { SUPABASE_ANON_KEY, SUPABASE_URL } from "../env";
+import { HEADERS_KEYS } from "../url";
 
 export async function updateSession(request: NextRequest) {
+  const headers = request.headers;
+  headers.set(HEADERS_KEYS.currentPath, request.nextUrl.pathname);
   let supabaseResponse = NextResponse.next({
     request,
+    headers,
   });
 
   const supabase = createServerClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
@@ -18,6 +22,7 @@ export async function updateSession(request: NextRequest) {
         );
         supabaseResponse = NextResponse.next({
           request,
+          headers,
         });
         cookiesToSet.forEach(({ name, value, options }) =>
           supabaseResponse.cookies.set(name, value, options)
@@ -45,7 +50,7 @@ export async function updateSession(request: NextRequest) {
     // no user, potentially respond by redirecting the user to the login page
     const url = request.nextUrl.clone();
     url.pathname = "/login";
-    return NextResponse.redirect(url);
+    return NextResponse.redirect(url, { headers });
   }
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is.

@@ -2,6 +2,9 @@ import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { SUPABASE_ANON_KEY, SUPABASE_URL } from "../env";
 
+import { redirect } from "next/navigation";
+import { isCurrentPathAnAuthPath } from "../url";
+
 async function createSupabaseServerClient() {
   const cookieStore = await cookies();
 
@@ -28,10 +31,10 @@ async function createSupabaseServerClient() {
 const getLoggedInUser = async () => {
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase.auth.getUser();
-  // Note: do proper error handling here
-  //   if (error) {
-  //     throw error;
-  //   }
+  const currentPathIsAuthPath = await isCurrentPathAnAuthPath();
+  if (error && !currentPathIsAuthPath) {
+    redirect("/login");
+  }
   return data.user;
 };
 
