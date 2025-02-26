@@ -5,6 +5,7 @@ import { Button } from "./ui/button";
 import { useActionState, useEffect } from "react";
 import { signOut } from "@/app/login/actions";
 import { toast } from "sonner";
+import { User } from "@/lib/types";
 
 const TEXT = {
   signOutError: "An error occurred while signing out",
@@ -13,7 +14,7 @@ const TEXT = {
 
 type LogoutButtonProps = {
   // TODO: fix the type of this when we generate supabase types
-  loggedInUser: any;
+  loggedInUser: User | null;
 };
 
 const LogoutButton = ({ loggedInUser }: LogoutButtonProps) => {
@@ -21,8 +22,8 @@ const LogoutButton = ({ loggedInUser }: LogoutButtonProps) => {
 
   useEffect(() => {
     if (error) {
-      console.log('error', error);
       toast.error(TEXT.signOutError);
+      console.log("error", error);
       // TODO: Log error to error tracking service
     }
   }, [error]);
