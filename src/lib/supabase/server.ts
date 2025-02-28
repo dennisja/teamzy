@@ -1,6 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { SUPABASE_ANON_KEY, SUPABASE_URL } from "../env";
+import type { Database } from "./types";
 
 import { redirect } from "next/navigation";
 import { isCurrentPathAnAuthPath } from "../url";
@@ -8,7 +9,7 @@ import { isCurrentPathAnAuthPath } from "../url";
 async function createSupabaseServerClient() {
   const cookieStore = await cookies();
 
-  return createServerClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+  return createServerClient<Database>(SUPABASE_URL, SUPABASE_ANON_KEY, {
     cookies: {
       getAll() {
         return cookieStore.getAll();
