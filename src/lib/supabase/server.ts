@@ -33,10 +33,10 @@ const getLoggedInUser = async () => {
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase.auth.getUser();
   const currentPathIsAuthPath = await isCurrentPathAnAuthPath();
-  if (error && !currentPathIsAuthPath) {
+  if ((error || !data.user) && !currentPathIsAuthPath) {
     redirect("/login");
   }
-  return data.user;
+  return data.user!;
 };
 
 export { getLoggedInUser, createSupabaseServerClient };
