@@ -1,0 +1,11 @@
+on:
+  pull_request:
+    types: [converted_to_draft]
+
+jobs:
+  test-pr-converted-to-draft-job:
+    runs-on: ubuntu-latest
+    name: Log Draft status
+    steps:
+      - name: Log Draft status
+        run: echo "PR has been converted to Draft"

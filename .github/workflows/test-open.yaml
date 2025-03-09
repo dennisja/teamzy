@@ -1,0 +1,17 @@
+on:
+  pull_request:
+    types: [opened, reopened, ready_for_review]
+
+jobs:
+  test-pr-opened-job:
+    runs-on: ubuntu-latest
+    name: Log PR opened status
+    steps:
+      - name: Log PR opened status
+        run: echo "PR has been opened"
+      - name: Move Asana task to code review section
+        uses: everphone-gmbh/github-asana-action@c4d0c3aeb4768dc9dc45fb60b843c0510da20dd5
+        with:
+          asana-pat: ${{ secrets.ASANA_PAT }}
+          action: "move-section"
+          targets: '[{"project": "teamzy", "section": "In Review"}]'
