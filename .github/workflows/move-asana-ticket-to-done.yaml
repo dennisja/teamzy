@@ -1,0 +1,16 @@
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  move-asana-task-to-done:
+    runs-on: ubuntu-latest
+    name: Move Asana task to done
+    steps:
+      - name: Move Asana task to done
+        uses: everphone-gmbh/github-asana-action@c4d0c3aeb4768dc9dc45fb60b843c0510da20dd5
+        if: github.event.pull_request.merged
+        with:
+          asana-pat: ${{ secrets.ASANA_PAT }}
+          action: "move-section"
+          targets: '[{"project": "teamzy", "section": "Done"}]'

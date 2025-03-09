@@ -1,0 +1,15 @@
+on:
+  pull_request:
+    types: [opened, reopened, ready_for_review]
+
+jobs:
+  move-asana-task-to-code-review:
+    runs-on: ubuntu-latest
+    name: Move Asana task to code review section
+    steps:
+      - name: Move Asana task to code review section
+        uses: everphone-gmbh/github-asana-action@c4d0c3aeb4768dc9dc45fb60b843c0510da20dd5
+        with:
+          asana-pat: ${{ secrets.ASANA_PAT }}
+          action: "move-section"
+          targets: '[{"project": "teamzy", "section": "In Review"}]'
