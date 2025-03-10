@@ -1,11 +1,29 @@
-import { Button } from "@/components/ui/button";
+import { getLoggedInUser } from "@/lib/supabase/server";
+import { CreateTeamDialog } from "./team/CreateTeamDialog";
 
-export default function Home() {
+const TEXT = {
+  welcomeBack: "Welcome Back!",
+  shareUpdate: "Share your weekly update and stay connected with your team.",
+};
+
+export default async function Home() {
+  const loggedInUser = await getLoggedInUser();
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Button>Hello World</Button>
-      </main>
-    </div>
+    <>
+      <div className="max-w-3xl mx-auto space-y-8 animate-in">
+        <section className="space-y-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-3xl font-bold tracking-tight">
+                {TEXT.welcomeBack}
+              </h2>
+              <p className="text-muted-foreground">{TEXT.shareUpdate}</p>
+            </div>
+            <CreateTeamDialog user={loggedInUser} />
+          </div>
+        </section>
+      </div>
+    </>
   );
 }
