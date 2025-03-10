@@ -1,0 +1,19 @@
+# for this action to work, you need to go to the repository's settings
+# and add a secret named ASANA_PAT with a Personal Access Token from Asana
+# you also need to give write permissions to actions under Settings -> Actions -> General -> Workflow Permissions
+on:
+    pull_request:
+      types: [opened, reopened, edited, labeled, unlabeled, synchronize, ready_for_review]
+  
+jobs:
+    validate-asana-link-presence:
+      runs-on: ubuntu-latest
+      name: Validate Asana link presence
+      steps:
+        - name: Validate Asana link presence
+          uses: everphone-gmbh/github-asana-action@c4d0c3aeb4768dc9dc45fb60b843c0510da20dd5
+          with:
+            asana-pat: ${{ secrets.ASANA_PAT }}
+            action: "assert-link"
+            link-required: ${{ !contains(github.event.pull_request.labels.*.name, 'hotfix') }}
+            github-token: ${{ github.token }}
