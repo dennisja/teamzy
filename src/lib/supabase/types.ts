@@ -64,7 +64,7 @@ export type Database = {
             foreignKeyName: "comments_update_id_fkey";
             columns: ["update_id"];
             isOneToOne: false;
-            referencedRelation: "updates";
+            referencedRelation: "team_member_update";
             referencedColumns: ["id"];
           },
           {
@@ -96,6 +96,83 @@ export type Database = {
           id?: string;
         };
         Relationships: [];
+      };
+      team_member_update: {
+        Row: {
+          blockers: string | null;
+          created_at: string;
+          id: string;
+          next_week: string;
+          personal_note: string | null;
+          personal_status: string;
+          previous_week: string;
+          team_id: string;
+          team_update_id: string;
+          update_group_id: string | null;
+          user_id: string;
+          work_note: string | null;
+          work_status: string;
+        };
+        Insert: {
+          blockers?: string | null;
+          created_at?: string;
+          id?: string;
+          next_week: string;
+          personal_note?: string | null;
+          personal_status: string;
+          previous_week: string;
+          team_id: string;
+          team_update_id?: string;
+          update_group_id?: string | null;
+          user_id: string;
+          work_note?: string | null;
+          work_status: string;
+        };
+        Update: {
+          blockers?: string | null;
+          created_at?: string;
+          id?: string;
+          next_week?: string;
+          personal_note?: string | null;
+          personal_status?: string;
+          previous_week?: string;
+          team_id?: string;
+          team_update_id?: string;
+          update_group_id?: string | null;
+          user_id?: string;
+          work_note?: string | null;
+          work_status?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "team_member_update_team_update_id_fkey";
+            columns: ["team_update_id"];
+            isOneToOne: false;
+            referencedRelation: "team_update";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "updates_team_id_fkey";
+            columns: ["team_id"];
+            isOneToOne: false;
+            referencedRelation: "teams";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "updates_update_group_id_fkey";
+            columns: ["update_group_id"];
+            isOneToOne: false;
+            referencedRelation: "team_update";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "updates_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       team_members: {
         Row: {
@@ -133,103 +210,7 @@ export type Database = {
           },
         ];
       };
-      teams: {
-        Row: {
-          created_at: string;
-          created_by: string | null;
-          id: string;
-          name: string;
-        };
-        Insert: {
-          created_at?: string;
-          created_by?: string | null;
-          id?: string;
-          name: string;
-        };
-        Update: {
-          created_at?: string;
-          created_by?: string | null;
-          id?: string;
-          name?: string;
-        };
-        Relationships: [
-          {
-            foreignKeyName: "teams_created_by_fkey";
-            columns: ["created_by"];
-            isOneToOne: false;
-            referencedRelation: "profiles";
-            referencedColumns: ["id"];
-          },
-        ];
-      };
-      updates: {
-        Row: {
-          blockers: string | null;
-          created_at: string;
-          id: string;
-          next_week: string;
-          personal_note: string | null;
-          personal_status: string;
-          previous_week: string;
-          team_id: string;
-          update_group_id: string | null;
-          user_id: string;
-          work_note: string | null;
-          work_status: string;
-        };
-        Insert: {
-          blockers?: string | null;
-          created_at?: string;
-          id?: string;
-          next_week: string;
-          personal_note?: string | null;
-          personal_status: string;
-          previous_week: string;
-          team_id: string;
-          update_group_id?: string | null;
-          user_id: string;
-          work_note?: string | null;
-          work_status: string;
-        };
-        Update: {
-          blockers?: string | null;
-          created_at?: string;
-          id?: string;
-          next_week?: string;
-          personal_note?: string | null;
-          personal_status?: string;
-          previous_week?: string;
-          team_id?: string;
-          update_group_id?: string | null;
-          user_id?: string;
-          work_note?: string | null;
-          work_status?: string;
-        };
-        Relationships: [
-          {
-            foreignKeyName: "updates_team_id_fkey";
-            columns: ["team_id"];
-            isOneToOne: false;
-            referencedRelation: "teams";
-            referencedColumns: ["id"];
-          },
-          {
-            foreignKeyName: "updates_update_group_id_fkey";
-            columns: ["update_group_id"];
-            isOneToOne: false;
-            referencedRelation: "updates_group";
-            referencedColumns: ["id"];
-          },
-          {
-            foreignKeyName: "updates_user_id_fkey";
-            columns: ["user_id"];
-            isOneToOne: false;
-            referencedRelation: "profiles";
-            referencedColumns: ["id"];
-          },
-        ];
-      };
-      updates_group: {
+      team_update: {
         Row: {
           created_at: string;
           end_date: string;
@@ -260,6 +241,35 @@ export type Database = {
             columns: ["team_id"];
             isOneToOne: false;
             referencedRelation: "teams";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      teams: {
+        Row: {
+          created_at: string;
+          created_by: string | null;
+          id: string;
+          name: string;
+        };
+        Insert: {
+          created_at?: string;
+          created_by?: string | null;
+          id?: string;
+          name: string;
+        };
+        Update: {
+          created_at?: string;
+          created_by?: string | null;
+          id?: string;
+          name?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "teams_created_by_fkey";
+            columns: ["created_by"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
             referencedColumns: ["id"];
           },
         ];

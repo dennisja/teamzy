@@ -1,7 +1,6 @@
 "use server";
 
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-import { error } from "console";
 
 const TEXT = {
   teamCreated: "Team created successfully!",
@@ -32,7 +31,6 @@ export const createTeam = async (
         name,
         created_by: userId,
       },
-      
     ])
     .select()
     .single();

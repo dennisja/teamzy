@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { User } from "@supabase/supabase-js";
+import { User } from "@/lib/types";
 import { createTeam } from "./actions";
 import { Label } from "@/components/ui/label";
 
@@ -20,6 +20,7 @@ const TEXT = {
   creating: "Creating...",
   createTeam: "Create Team",
   teamName: "Team Name",
+  enterName: "Enter team name",
 };
 
 export function CreateTeamDialog({ user }: { user: User }) {
@@ -56,7 +57,7 @@ export function CreateTeamDialog({ user }: { user: User }) {
             <Input
               id="team-name"
               name="team-name"
-              placeholder="Enter team name"
+              placeholder={TEXT.enterName}
               required
             />
           </div>
